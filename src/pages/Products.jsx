@@ -24,9 +24,10 @@ const Products = () => {
 
   const addToCart = (product) => {
     try {
-      // Add qty property to the product
-      const productWithQty = { ...product, qty: 1 }
-      const updatedCart = [...cart, productWithQty]
+      const existing = cart.find(i => i.id === product.id)
+      const updatedCart = existing
+        ? cart.map(i => i.id === product.id ? { ...i, qty: i.qty + 1 } : i)
+        : [...cart, { ...product, qty: 1 }]
       setCart(updatedCart)
       localStorage.setItem('cart', JSON.stringify(updatedCart))
       showToast(`"${product.name}" added to cart!`)
